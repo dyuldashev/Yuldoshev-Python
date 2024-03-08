@@ -18,21 +18,60 @@ Algorithm for checking bracket sequence
 
 # Solve with stack
 def check_brackets(brackets):
-    result = []  # Stack to store opening brackets
-    for ele in brackets:
+    try:
+        result = []  # Stack to store opening brackets
+        for ele in brackets:
+            if len(result) == 0:
+                result.append(ele)
+            elif (result[-1] == "(" and ele == ')') or (result[-1] == "[" and ele == "]"):
+                result.pop()
+            else:
+                result.append(ele)
+
         if len(result) == 0:
-            result.append(ele)
-        elif (result[-1] == "(" and ele == ')') or (result[-1] == "[" and ele == "]"):
-            result.pop()
+            print("Brackets are correct")
         else:
-            result.append(ele)
+            print("Mistakes list: ", result)
+    except Exception as e:
+        print("Error:", e)
 
-    if len(result) == 0:
-        print("Brackets are right")
-    else:
-        print("Mistakes list: ", result)
+def main():
+    while True:
+        try:
+            brackets = input("Enter your brackets sequence: ")
+            if not brackets:
+                brackets = input("Please enter brackets sequence: ")
+            try:
+                check_brackets(brackets)
+            except Exception as e:
+                print("Unexpected Error:", e)
+            choice = input("Do you want to enter more data? (yes/no): ")
+            if choice.lower() != "yes":
+                break  # If the user doesn't want to enter more data, exit the loop
+        except Exception as e:
+            print("Something went wrong:", e)
+def test_function():
+    test_cases = [
+        ("[((())()(())]]", "Mistakes list: ['[', '(', ']', ']']"),
+        ("[()][()()]()", "Brackets are correct"),
+        ("[(])", "Mistakes list: ['[', '(', ']', ')']"),
+        ("", "Brackets are correct"),
+        ("(", "Mistakes list: ['(']"),
+        ("]", "Mistakes list: [']']"),
+    ]
+
+    for brackets, expected_output in test_cases:
+        print("\nTesting bracket sequence:", brackets)
+        print("Expected Output:", expected_output)
+        try:
+            check_brackets(brackets)
+        except Exception as e:
+            print("Unexpected Error:", e)
 
 
-# The above function is not fully correct. We might be optimizing depending on a given task
-brackets = input("Enter the sequence ( or ] brackets: ")
-check_brackets(brackets)
+
+
+if __name__ == "__main__":
+    test_function()
+    print("Test your sample!")
+    main()
